@@ -4,9 +4,8 @@
  * Supporte Railway (Production) et MAMP (Local)
  */
 
-// Détection automatique de l'environnement (Railway ou Local)
 if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
-    $baseUrl = ''; // En production, le site est à la racine du domaine
+    $baseUrl = '/siteweb'; // En production, car la racine du repo contient le dossier siteweb
 } else {
     $baseUrl = '/TGT/siteweb'; // En local (MAMP/WAMP)
 }
