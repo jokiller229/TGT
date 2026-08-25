@@ -1,9 +1,15 @@
 <?php
 /**
  * TGTravail - Module de Connexion et Initialisation Automatique MySQL
- * Supporte les configurations MAMP (port 3306 / 8889, user: root, pass: root ou vide)
+ * Supporte Railway (Production) et MAMP (Local)
  */
-$baseUrl = '/TGT/siteweb';
+
+// Détection automatique de l'environnement (Railway ou Local)
+if (getenv('RAILWAY_ENVIRONMENT') || getenv('RAILWAY_PROJECT_ID')) {
+    $baseUrl = ''; // En production, le site est à la racine du domaine
+} else {
+    $baseUrl = '/TGT/siteweb'; // En local (MAMP/WAMP)
+}
 
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
@@ -20,16 +26,27 @@ class Database {
             return self::$instance;
         }
 
-        $configs = [
-            ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => 'root'],
-            ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => ''],
-            ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => 'root'],
-            ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => ''],
-            ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => 'root'],
-            ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => ''],
-        ];
+        // Si on est sur Railway, on utilise les variables d'environnement injectées par MySQL
+        if (getenv('MYSQLHOST')) {
+            $configs = [[
+                'host' => getenv('MYSQLHOST'),
+                'port' => getenv('MYSQLPORT'),
+                'user' => getenv('MYSQLUSER'),
+                'pass' => getenv('MYSQLPASSWORD'),
+                'dbname' => getenv('MYSQLDATABASE')
+            ]];
+        } else {
+            // Configuration de secours pour le Local (MAMP)
+            $configs = [
+                ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => 'root', 'dbname' => 'tgtravail'],
+                ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => '', 'dbname' => 'tgtravail'],
+                ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => 'root', 'dbname' => 'tgtravail'],
+                ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => '', 'dbname' => 'tgtravail'],
+                ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => 'root', 'dbname' => 'tgtravail'],
+                ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => '', 'dbname' => 'tgtravail'],
+            ];
+        }
 
-        $dbName = 'tgtravail';
         $connected = false;
         $lastError = '';
 
@@ -46,11 +63,12 @@ class Database {
                     ]
                 );
 
-                // 2. Création de la base si inexistante
+                // 2. Création de la base si inexistante (Local surtout)
+                $dbName = $cfg['dbname'];
                 $serverPdo->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
 
-                // 3. Connexion directe à la base de données
-                $pdo = new PDO(
+                // 3. Connexion finale à la base de données
+                self::$instance = new PDO(
                     "mysql:host={$cfg['host']};port={$cfg['port']};dbname={$dbName};charset=utf8mb4",
                     $cfg['user'],
                     $cfg['pass'],
@@ -62,9 +80,8 @@ class Database {
                 );
 
                 // 4. Initialisation des tables & données
-                self::initializeSchema($pdo);
+                self::initializeSchema(self::$instance);
 
-                self::$instance = $pdo;
                 $connected = true;
                 break;
             } catch (PDOException $e) {
