@@ -16,16 +16,29 @@ class Database {
             return self::$instance;
         }
 
-        $configs = [
-            ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => 'root'],
-            ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => ''],
-            ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => 'root'],
-            ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => ''],
-            ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => 'root'],
-            ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => ''],
-        ];
+        // Si on est sur Railway, on utilise les variables d'environnement injectées par MySQL
+        $host = getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: $_ENV['MYSQLHOST'] ?? $_ENV['MYSQL_HOST'] ?? null;
+        
+        if ($host) {
+            $configs = [[
+                'host' => $host,
+                'port' => getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: $_ENV['MYSQLPORT'] ?? $_ENV['MYSQL_PORT'] ?? 3306,
+                'user' => getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: $_ENV['MYSQLUSER'] ?? $_ENV['MYSQL_USER'] ?? 'root',
+                'pass' => getenv('MYSQL_ROOT_PASSWORD') ?: getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD') ?: $_ENV['MYSQL_ROOT_PASSWORD'] ?? $_ENV['MYSQLPASSWORD'] ?? '',
+                'dbname' => 'railway' // Le nom par défaut sur Railway
+            ]];
+        } else {
+            $configs = [
+                ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => 'root'],
+                ['host' => '127.0.0.1', 'port' => 3306, 'user' => 'root', 'pass' => ''],
+                ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => 'root'],
+                ['host' => '127.0.0.1', 'port' => 8889, 'user' => 'root', 'pass' => ''],
+                ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => 'root'],
+                ['host' => 'localhost', 'port' => 3306, 'user' => 'root', 'pass' => ''],
+            ];
+        }
 
-        $dbName = 'tgtravail';
+        $dbName = getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: $_ENV['MYSQLDATABASE'] ?? $_ENV['MYSQL_DATABASE'] ?? 'tgtravail';
         $connected = false;
         $lastError = '';
 
