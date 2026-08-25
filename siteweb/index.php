@@ -233,7 +233,6 @@ require_once __DIR__ . '/includes/header.php';
         <?php foreach ($featuredJobs as $job):
           $logo = !empty($job['company_logo']) && file_exists(__DIR__ . '/' . $job['company_logo'])
                   ? htmlspecialchars($job['company_logo']) : null;
-          $daysLeft = max(0, (int)((strtotime($job['featured_until']) - time()) / 86400));
         ?>
         <a href="id=<?= $job['id'] ?>" data-aos="zoom-in" data-aos-delay="100" style="text-decoration:none; display:block; background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,184,0,0.3); border-radius:16px; padding:1.25rem 1.5rem; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,184,0,0.08)';this.style.borderColor='rgba(255,184,0,0.6)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.borderColor='rgba(255,184,0,0.3)';this.style.transform=''">
           <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.85rem;">
@@ -247,8 +246,8 @@ require_once __DIR__ . '/includes/header.php';
             <div>
               <div style="font-size:0.78rem; color:#94A3B8;"><?= htmlspecialchars($job['company_nom']) ?></div>
               <div style="font-size:0.7rem; color:#FFB800; display:flex; align-items:center; gap:0.3rem;">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Mise en avant · <?= $daysLeft ?> jour(s)
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Offre Premium
               </div>
             </div>
           </div>
