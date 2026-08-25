@@ -17,7 +17,7 @@ if ($admin) {
     echo "Mot de passe admin mis à jour avec succès.";
 } else {
     // Insert new
-    $db->prepare("INSERT INTO users (nom, prenom, email, password, role, statut_compte, created_at) VALUES (?, ?, ?, ?, 'admin', 'actif', NOW())")
-       ->execute(['Admin', 'Super', $email, $hash]);
+    $db->prepare("INSERT INTO users (nom, email, password, role, statut_compte, created_at) VALUES (?, ?, ?, 'admin', 'actif', NOW())")
+       ->execute(['Admin Super', $email, $hash]);
     echo "Compte admin créé avec succès.";
 }
