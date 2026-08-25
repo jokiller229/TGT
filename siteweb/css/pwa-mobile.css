@@ -1,0 +1,246 @@
+/* ==========================================================================
+   TGTravail - PWA & Mobile App Shell Styles (For Candidates)
+   ========================================================================== */
+
+/* Show App Shell only when installed as PWA (standalone) */
+@media (display-mode: standalone) {
+  /* Hide standard web header elements */
+  body.pwa-candidate-mode .main-header {
+    display: none !important;
+  }
+  body.pwa-candidate-mode .dashboard-sidebar-dark {
+    display: none !important;
+  }
+  body.pwa-candidate-mode .web-only-view {
+    display: none !important;
+  }
+  
+  /* The Bottom Navigation Bar */
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid #E2E8F0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); /* For iPhone X+ */
+    z-index: 9999;
+    box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.05);
+  }
+  
+  .mobile-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    color: #64748B;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+    width: 20%;
+  }
+  
+  .mobile-bottom-nav-item svg {
+    stroke: currentColor;
+    fill: none;
+    transition: all 0.2s;
+  }
+  
+  .mobile-bottom-nav-item.active {
+    color: #0C1E3C; /* Dark Navy */
+  }
+  
+  .mobile-bottom-nav-item.active svg {
+    stroke: #0C1E3C;
+    fill: rgba(12, 30, 60, 0.1);
+  }
+  
+  /* Add padding to body so content doesn't hide behind bottom nav */
+  body.pwa-candidate-mode {
+    padding-bottom: 80px;
+    background-color: #ffffff; /* Typical for apps */
+  }
+
+  body.pwa-candidate-mode .dashboard-wrapper {
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+  }
+  
+  body.pwa-candidate-mode .dashboard-content-main {
+    padding: 1rem;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    margin: 0;
+  }
+
+  /* App Top Bar (Replaces Web Header) */
+  .app-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .app-top-bar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #0C1E3C;
+  }
+  
+  .app-top-bar-logo span.tg {
+    color: #FFB800;
+  }
+
+  .app-top-bar-icon {
+    position: relative;
+    color: #0C1E3C;
+  }
+
+  .app-top-bar-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #EF4444;
+    color: white;
+    font-size: 0.5rem;
+    font-weight: 800;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+}
+
+/* Hide PWA specific elements on normal web */
+@media all and (display-mode: browser) {
+  .mobile-bottom-nav,
+  .app-top-bar,
+  .pwa-only-view {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile App Splash Screen (Accueil Non Connecté)
+   ========================================================================== */
+#mobile-app-splash {
+  display: none; /* Hide on desktop by default */
+}
+
+@media (display-mode: standalone) {
+  /* On PWA, show the splash screen */
+  #mobile-app-splash {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #081326; /* Dark Navy from mockup */
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed; /* Takes over the entire screen */
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+
+  /* Hide the rest of the website behind it to avoid scrolling issues */
+  body:has(#mobile-app-splash) #desktop-main-content,
+  body:has(#mobile-app-splash) .main-header,
+  body:has(#mobile-app-splash) footer {
+    display: none !important;
+  }
+  
+  /* Layout inside Splash */
+  .splash-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  
+  .splash-logo-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+  }
+  
+  .splash-logo-text {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: white;
+  }
+  
+  .splash-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+  
+  .splash-description {
+    font-size: 0.85rem;
+    color: #94A3B8;
+    line-height: 1.5;
+    max-width: 280px;
+    margin-bottom: 4rem;
+  }
+  
+  .splash-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .splash-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .splash-btn-primary {
+    background-color: #FFB800;
+    color: #081326;
+  }
+  
+  .splash-btn-outline {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+  }
+  
+  .splash-btn-text {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 0.5rem;
+  }
+}

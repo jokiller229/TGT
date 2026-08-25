@@ -1,0 +1,21 @@
+{
+  "name": "TGTravail",
+  "short_name": "TGTravail",
+  "description": "Trouvez le bon emploi. Trouvez le bon talent.",
+  "start_url": "/TGT/siteweb/index.php",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b192c",
+  "icons": [
+    {
+      "src": "img/tgtravail-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/tgtravail-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
