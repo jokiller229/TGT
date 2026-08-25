@@ -27,13 +27,15 @@ class Database {
         }
 
         // Si on est sur Railway, on utilise les variables d'environnement injectées par MySQL
-        if (getenv('MYSQLHOST')) {
+        $host = getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: $_ENV['MYSQLHOST'] ?? $_ENV['MYSQL_HOST'] ?? null;
+        
+        if ($host) {
             $configs = [[
-                'host' => getenv('MYSQLHOST'),
-                'port' => getenv('MYSQLPORT'),
-                'user' => getenv('MYSQLUSER'),
-                'pass' => getenv('MYSQLPASSWORD'),
-                'dbname' => getenv('MYSQLDATABASE')
+                'host' => $host,
+                'port' => getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: $_ENV['MYSQLPORT'] ?? $_ENV['MYSQL_PORT'] ?? 3306,
+                'user' => getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: $_ENV['MYSQLUSER'] ?? $_ENV['MYSQL_USER'] ?? 'root',
+                'pass' => getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD') ?: $_ENV['MYSQLPASSWORD'] ?? $_ENV['MYSQL_PASSWORD'] ?? '',
+                'dbname' => getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: $_ENV['MYSQLDATABASE'] ?? $_ENV['MYSQL_DATABASE'] ?? 'tgtravail'
             ]];
         } else {
             // Configuration de secours pour le Local (MAMP)
