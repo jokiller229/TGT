@@ -20,15 +20,14 @@ $recentJobsStmt = $db->query("
 ");
 $recentJobs = $recentJobsStmt->fetchAll();
 
-// Offres mises en avant (featured_until > NOW())
+// Offres mises en avant (pack = 'alaune')
 $featuredJobsStmt = $db->query("
   SELECT j.*, c.nom AS company_nom, c.logo AS company_logo, c.verifie AS company_verifie
   FROM jobs j
   JOIN companies c ON j.company_id = c.id
   WHERE j.statut = 'active'
-  AND j.featured_until IS NOT NULL
-  AND j.featured_until > NOW()
-  ORDER BY j.featured_until DESC
+  AND j.pack = 'alaune'
+  ORDER BY j.created_at DESC
   LIMIT 3
 ");
 $featuredJobs = $featuredJobsStmt->fetchAll();
