@@ -17,7 +17,7 @@ if ($currentRole !== 'visiteur' && $currentRole !== '') {
   .login-container {
     min-height: 100vh;
     display: flex;
-    background: #F8FAFC;
+    background: #FFFFFF;
     overflow: hidden;
   }
   .login-left {
@@ -90,14 +90,12 @@ if ($currentRole !== 'visiteur' && $currentRole !== '') {
 
   /* Form Styling */
   .login-form-box {
-    background: white;
-    border-radius: 24px;
-    padding: 3rem;
+    padding: 2rem;
     width: 100%;
     max-width: 440px;
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
     position: relative;
     z-index: 10;
+    margin: auto;
   }
   .form-input {
     width: 100%;

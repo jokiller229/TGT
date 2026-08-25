@@ -14,7 +14,7 @@ if ($currentRole !== 'visiteur' && $currentRole !== '') {
   .register-container {
     min-height: 100vh;
     display: flex;
-    background: #F8FAFC;
+    background: #FFFFFF;
     overflow: hidden;
   }
   .register-left {
@@ -88,12 +88,9 @@ if ($currentRole !== 'visiteur' && $currentRole !== '') {
 
   /* Form Styling */
   .register-form-box {
-    background: white;
-    border-radius: 24px;
-    padding: 3rem;
+    padding: 2rem;
     width: 100%;
     max-width: 480px;
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02);
     position: relative;
     z-index: 10;
     margin: auto;
