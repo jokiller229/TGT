@@ -25,7 +25,7 @@ if (!$jobId) {
 
 // Verify this job belongs to the recruiter's company
 $stmt = $db->prepare("
-    SELECT j.id, j.titre, j.featured_until FROM jobs j
+    SELECT j.id, j.titre, j.pack FROM jobs j
     JOIN companies c ON j.company_id = c.id
     WHERE j.id = ? AND c.user_id = ? AND j.statut = 'active'
 ");
@@ -38,20 +38,18 @@ if (!$job) {
 }
 
 // Check if already featured
-if ($job['featured_until'] && strtotime($job['featured_until']) > time()) {
-    $expire = date('d/m/Y', strtotime($job['featured_until']));
-    echo json_encode(['ok' => false, 'msg' => "Cette offre est deja mise en avant jusqu'au {$expire}"]);
+if ($job['pack'] === 'alaune') {
+    echo json_encode(['ok' => false, 'msg' => "Cette offre est déjà mise en avant avec le pack à la une."]);
     exit;
 }
 
-// Activate featured for 3 days
-$featuredUntil = date('Y-m-d H:i:s', strtotime('+3 days'));
-$db->prepare("UPDATE jobs SET featured_until = ? WHERE id = ?")->execute([$featuredUntil, $jobId]);
+// Activate featured (pack = alaune)
+$db->prepare("UPDATE jobs SET pack = 'alaune' WHERE id = ?")->execute([$jobId]);
 
 echo json_encode([
     'ok'   => true,
-    'msg'  => "Offre mise en avant jusqu'au " . date('d/m/Y', strtotime($featuredUntil)),
-    'until' => $featuredUntil
+    'msg'  => "Offre mise en avant avec succès !",
+    'until' => 'Illimité'
 ]);
 
 

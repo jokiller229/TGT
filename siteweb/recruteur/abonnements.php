@@ -25,7 +25,7 @@ $isOnFree = ($totalJobs < $freeQuota);
 
 // Load active jobs for the boost/feature/push modals
 $activeJobs = $db->query("
-    SELECT id, titre, boosted_until, featured_until, push_sent_at
+    SELECT id, titre, pack
     FROM jobs
     WHERE company_id = {$companyId} AND statut = 'active'
     ORDER BY created_at DESC

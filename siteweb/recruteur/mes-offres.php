@@ -34,8 +34,7 @@ $companyLogo = $company['logo'] ?? null;
 $stmtJobs = $db->prepare("
     SELECT j.*,
            (SELECT COUNT(id) FROM applications WHERE job_id = j.id) as candidatures_real,
-           j.boosted_until,
-           j.featured_until,
+           j.pack,
            j.date_limite
     FROM jobs j
     WHERE j.company_id = ?
@@ -108,8 +107,8 @@ require_once __DIR__ . '/../includes/header.php';
             </thead>
             <tbody>
               <?php foreach ($jobs as $j):
-                $isBoosted  = !empty($j['boosted_until'])  && strtotime($j['boosted_until'])  > time();
-                $isFeatured = !empty($j['featured_until']) && strtotime($j['featured_until']) > time();
+                $isBoosted  = false; // Plus supporté dans le nouveau schéma
+                $isFeatured = ($j['pack'] === 'alaune');
                 $daysLeft   = !empty($j['date_limite']) ? (int)((strtotime($j['date_limite']) - time()) / 86400) : null;
                 $vues       = (int)($j['vues_count'] ?? 0);
                 $apps       = (int)($j['candidatures_real'] ?? $j['candidatures_count'] ?? 0);

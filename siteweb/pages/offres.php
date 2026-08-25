@@ -51,21 +51,18 @@ if (!empty($experiences)) {
     foreach ($experiences as $e) $params[] = $e;
 }
 
-// Tri — les offres boostées/en vedette remontent toujours en premier
+// Tri — les offres en vedette (pack alaune) remontent toujours en premier
 if ($tri === 'salaire') {
     $sql .= " ORDER BY
-        CASE WHEN j.boosted_until > NOW() THEN 0 ELSE 1 END ASC,
-        CASE WHEN j.featured_until > NOW() THEN 0 ELSE 1 END ASC,
+        CASE WHEN j.pack = 'alaune' THEN 0 ELSE 1 END ASC,
         j.salaire_max DESC";
 } elseif ($tri === 'populaires') {
     $sql .= " ORDER BY
-        CASE WHEN j.boosted_until > NOW() THEN 0 ELSE 1 END ASC,
-        CASE WHEN j.featured_until > NOW() THEN 0 ELSE 1 END ASC,
+        CASE WHEN j.pack = 'alaune' THEN 0 ELSE 1 END ASC,
         j.candidatures_count DESC, j.vues_count DESC";
 } else {
     $sql .= " ORDER BY
-        CASE WHEN j.boosted_until > NOW() THEN 0 ELSE 1 END ASC,
-        CASE WHEN j.featured_until > NOW() THEN 0 ELSE 1 END ASC,
+        CASE WHEN j.pack = 'alaune' THEN 0 ELSE 1 END ASC,
         j.created_at DESC";
 }
 
